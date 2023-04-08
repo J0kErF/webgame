@@ -1597,8 +1597,8 @@ THE SOFTWARE.
 
                 // Loop through the path elements and set their fill color
                 paths.forEach(path => {
-                    // Check if the name attribute of the path element matches any of the countries in the countryColors object
-                    const countryName = path.getAttribute('name');
+                    // Check if the name or class attribute of the path element matches any of the countries in the countryColors object
+                    const countryName = path.getAttribute('name') || path.getAttribute('class');
                     if (countryName && countryColors[countryName]) {
                         // Change the color of the path element using the style property
                         path.style.fill = countryColors[countryName];
