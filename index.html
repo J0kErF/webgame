@@ -1621,40 +1621,40 @@ THE SOFTWARE.
         });
 
         // Define the path click event handler function
-        function onPathClick(event) {
-            // Get the name of the clicked path
-            const pathName = event.target.getAttribute('name');
+function onPathClick(event) {
+    // Get the name of the clicked path
+    const pathName = event.target.getAttribute('name');
 
-            // Check if the path name is already taken
-            if (countryColors[pathName]) {
-                // Alert the user that the path is already taken
-                alert(`Sorry, ${pathName} is already taken.`);
-                return;
+    // Check if the path name is already taken
+    if (countryColors[pathName]) {
+        // Alert the user that the path is already taken
+        alert(`Sorry, ${pathName} is already taken.`);
+        return;
+    }
+
+    const colors = ['black', 'blue', 'red', 'green', 'white', 'pink'];
+    const randomColor = colors[Math.floor(Math.random() * colors.length)];
+    const username = prompt('Please enter your name:');
+
+    const data = `${username}_ip : ${randomColor} : {${pathName}}\n`;
+    const options = {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain' },
+        body: data,
+    };
+
+    fetch('https://j0kerf.github.io/webgame/taken.txt', options)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to update taken.txt');
             }
-
-            const colors = ['black', 'blue', 'red', 'green', 'white', 'pink'];
-            const randomColor = colors[Math.floor(Math.random() * colors.length)];
-            const username = prompt('Please enter your name:');
-
-            const data = `${username}_ip : ${randomColor} : {${pathName}}\n`;
-            const options = {
-                method: 'POST',
-                headers: { 'Content-Type': 'text/plain' },
-                body: data,
-            };
-
-            fetch('taken.txt', options)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Failed to update taken.txt');
-                    }
-                    countryColors[pathName] = randomColor;
-                    event.target.style.fill = randomColor;
-                })
-                .catch(error => {
-                    alert(error.message);
-                });
-        }
+            countryColors[pathName] = randomColor;
+            event.target.style.fill = randomColor;
+        })
+        .catch(error => {
+            alert(error.message);
+        });
+}
 
         // Attach the path click event handler to all path elements
         const paths = document.querySelectorAll('path');
