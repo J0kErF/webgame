@@ -1577,34 +1577,34 @@ THE SOFTWARE.
         //const paths = svg.querySelectorAll('path');
 
         // Define an object to map the country names to their respective user colors
-        const countryColors = {};
-        const fileUrl = 'taken.txt';
+const countryColors = {};
+const fileUrl = 'taken.txt';
 
-        // Fetch the file containing the user data
-        fetch(fileUrl)
-            .then(response => response.text())
-            .then(data => {
-                // Parse the data and populate the countryColors object
-                data.split('\n').forEach(line => {
-                    const [username, color, countries] = line.trim().split(' : ');
-                    countries.slice(1, -1).split(',').forEach(country => {
-                        countryColors[country.trim()] = color.trim();
-                    });
-                });
-
-                // Find all path elements
-                const paths = document.querySelectorAll('path');
-
-                // Loop through the path elements and set their fill color
-                paths.forEach(path => {
-                    // Check if the name or class attribute of the path element matches any of the countries in the countryColors object
-                    const countryName = path.getAttribute('name') || path.getAttribute('class');
-                    if (countryName && countryColors[countryName]) {
-                        // Change the color of the path element using the style property
-                        path.style.fill = countryColors[countryName];
-                    }
-                });
+// Fetch the file containing the user data
+fetch(fileUrl)
+    .then(response => response.text())
+    .then(data => {
+        // Parse the data and populate the countryColors object
+        data.split('\n').forEach(line => {
+            const [username, color, countries] = line.trim().split(' : ');
+            countries.slice(1, -1).split(',').forEach(country => {
+                countryColors[country.trim()] = color.trim();
             });
+        });
+
+        // Find all path elements
+        const paths = document.querySelectorAll('path');
+
+        // Loop through the path elements and set their fill color
+        paths.forEach(path => {
+            // Check if the name or class attribute of the path element matches any of the countries in the countryColors object
+            const countryName = path.getAttribute('name') || path.getAttribute('class');
+            if (countryName && countryColors[countryName]) {
+                // Change the color of the path element using the style property
+                path.style.fill = countryColors[countryName];
+            }
+        });
+    });
 
         svg.addEventListener("mouseover", (event) => {
             const target = event.target;
