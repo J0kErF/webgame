@@ -1619,6 +1619,30 @@ fetch(fileUrl)
         svg.addEventListener("mouseout", () => {
             lbl.innerHTML = "";
         });
+        const svgContainer = document.getElementById('svg-container');
+
+let viewBox = [0, 0, 2000, 857]; // initial viewbox values
+let scaleFactor = 1.1; // factor by which to scale the viewbox
+
+// add event listeners to the svg container element
+svgContainer.addEventListener('keydown', function(event) {
+  if (event.ctrlKey && event.key === '+') {
+    event.preventDefault(); // prevent default behavior of the keyboard event
+    viewBox[2] /= scaleFactor;
+    viewBox[3] /= scaleFactor;
+    svgContainer.querySelector('svg').setAttribute('viewBox', viewBox.join(' '));
+  }
+  else if (event.ctrlKey && event.key === '-') {
+    event.preventDefault(); // prevent default behavior of the keyboard event
+    viewBox[2] *= scaleFactor;
+    viewBox[3] *= scaleFactor;
+    svgContainer.querySelector('svg').setAttribute('viewBox', viewBox.join(' '));
+  }
+});
+In this example, we define an initial viewbox with values [0, 0, 2000, 857], which corresponds to the width and height of the SVG. We also define a scale factor of 1.1, which determines how
+
+
+
 
 
     </script>
