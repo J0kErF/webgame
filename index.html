@@ -1632,47 +1632,29 @@ THE SOFTWARE.
                 return;
             }
 
-           // Create an array to keep track of the used colors
-const usedColors = [];
+            // Get a random color for the new user
+            const colors = ['black', 'blue', 'red', 'green', 'white', 'pink'];
+            const randomColor = colors[Math.floor(Math.random() * colors.length)];
 
-function onPathClick(event) {
-  // Get the name of the clicked path
-  const pathName = event.target.getAttribute('name');
+            // Prompt the user for their name
+            const username = prompt('Please enter your name:');
 
-  // Check if the path name is already taken
-  if (countryColors[pathName]) {
-    // Alert the user that the path is already taken
-    alert(`Sorry, ${pathName} is already taken.`);
-    return;
-  }
+            // Update the taken.txt file
+            fetch('taken.txt', {
+                method: 'POST',
+                body: `${username}_ip : ${randomColor} : {${pathName}}\n`,
+                mode: 'no-cors'
+            }).then(() => {
+                // Update the countryColors object with the new path and color
+                countryColors[pathName] = randomColor;
 
-  // Get a random color that hasn't been used yet
-  const colors = ['black', 'blue', 'red', 'green', 'white', 'pink'];
-  let randomColor;
-  do {
-    randomColor = colors[Math.floor(Math.random() * colors.length)];
-  } while (usedColors.includes(randomColor));
-  usedColors.push(randomColor);
-
-  // Get the user's IP address
-  const username = event.requestContext.identity.sourceIp;
-
-  // Update the taken.txt file
-  fetch('taken.txt', {
-    method: 'POST',
-    body: `${username} : ${randomColor} : {${pathName}}\n`,
-    mode: 'no-cors'
-  }).then(() => {
-    // Update the countryColors object with the new path and color
-    countryColors[pathName] = randomColor;
-
-    // Set the path's fill color to the new color
-    event.target.style.fill = randomColor;
-  }).catch(() => {
-    // Alert the user if the update failed
-    alert('Failed to update taken.txt.');
-  });
-}
+                // Set the path's fill color to the new color
+                event.target.style.fill = randomColor;
+            }).catch(() => {
+                // Alert the user if the update failed
+                alert('Failed to update taken.txt.');
+            });
+        }
 
         // Attach the path click event handler to all path elements
         const paths = document.querySelectorAll('path');
