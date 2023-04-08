@@ -1,0 +1,2 @@
+user1 : red : {United States,Italy,Turkey}
+user2 : blue : {Canada,Greece,France,Palistine,Israel,Jordan}
