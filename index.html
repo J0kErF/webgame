@@ -1577,34 +1577,34 @@ THE SOFTWARE.
         //const paths = svg.querySelectorAll('path');
 
         // Define an object to map the country names to their respective user colors
-        const countryColors = {};
-        const fileUrl = 'taken.txt';
+const countryColors = {};
+const fileUrl = 'taken.txt';
 
-        // Fetch the file containing the user data
-        fetch(fileUrl)
-            .then(response => response.text())
-            .then(data => {
-                // Parse the data and populate the countryColors object
-                data.split('\n').forEach(line => {
-                    const [username, color, countries] = line.trim().split(' : ');
-                    countries.slice(1, -1).split(',').forEach(country => {
-                        countryColors[country.trim()] = color.trim();
-                    });
-                });
-
-                // Find all path elements
-                const paths = document.querySelectorAll('path');
-
-                // Loop through the path elements and set their fill color
-                paths.forEach(path => {
-                    // Check if the name or class attribute of the path element matches any of the countries in the countryColors object
-                    const countryName = path.getAttribute('name') || path.getAttribute('class');
-                    if (countryName && countryColors[countryName]) {
-                        // Change the color of the path element using the style property
-                        path.style.fill = countryColors[countryName];
-                    }
-                });
+// Fetch the file containing the user data
+fetch(fileUrl)
+    .then(response => response.text())
+    .then(data => {
+        // Parse the data and populate the countryColors object
+        data.split('\n').forEach(line => {
+            const [username, color, countries] = line.trim().split(' : ');
+            countries.slice(1, -1).split(',').forEach(country => {
+                countryColors[country.trim()] = color.trim();
             });
+        });
+
+        // Find all path elements
+        const paths = document.querySelectorAll('path');
+
+        // Loop through the path elements and set their fill color
+        paths.forEach(path => {
+            // Check if the name or class attribute of the path element matches any of the countries in the countryColors object
+            const countryName = path.getAttribute('name') || path.getAttribute('class');
+            if (countryName && countryColors[countryName]) {
+                // Change the color of the path element using the style property
+                path.style.fill = countryColors[countryName];
+            }
+        });
+    });
 
         svg.addEventListener("mouseover", (event) => {
             const target = event.target;
@@ -1621,46 +1621,46 @@ THE SOFTWARE.
         });
 
         // Define the path click event handler function
-        function onPathClick(event) {
-            // Get the name of the clicked path
-            const pathName = event.target.getAttribute('name');
+function onPathClick(event) {
+  // Get the name of the clicked path
+  const pathName = event.target.getAttribute('name');
+  
+  // Check if the path name is already taken
+  if (countryColors[pathName]) {
+    // Alert the user that the path is already taken
+    alert(`Sorry, ${pathName} is already taken.`);
+    return;
+  }
+  
+  // Get a random color for the new user
+  const colors = ['black', 'blue', 'red', 'green', 'white', 'pink'];
+  const randomColor = colors[Math.floor(Math.random() * colors.length)];
+  
+  // Prompt the user for their name
+  const username = prompt('Please enter your name:');
+  
+  // Update the taken.txt file
+  fetch('taken.txt', {
+    method: 'POST',
+    body: `${username}_ip : ${randomColor} : {${pathName}}\n`,
+    mode: 'no-cors'
+  }).then(() => {
+    // Update the countryColors object with the new path and color
+    countryColors[pathName] = randomColor;
+    
+    // Set the path's fill color to the new color
+    event.target.style.fill = randomColor;
+  }).catch(() => {
+    // Alert the user if the update failed
+    alert('Failed to update taken.txt.');
+  });
+}
 
-            // Check if the path name is already taken
-            if (countryColors[pathName]) {
-                // Alert the user that the path is already taken
-                alert(`Sorry, ${pathName} is already taken.`);
-                return;
-            }
-
-            // Get a random color for the new user
-            const colors = ['black', 'blue', 'red', 'green', 'white', 'pink'];
-            const randomColor = colors[Math.floor(Math.random() * colors.length)];
-
-            // Prompt the user for their name
-            const username = prompt('Please enter your name:');
-
-            // Update the taken.txt file
-            fetch('taken.txt', {
-                method: 'POST',
-                body: `${username}_ip : ${randomColor} : {${pathName}}\n`,
-                mode: 'no-cors'
-            }).then(() => {
-                // Update the countryColors object with the new path and color
-                countryColors[pathName] = randomColor;
-
-                // Set the path's fill color to the new color
-                event.target.style.fill = randomColor;
-            }).catch(() => {
-                // Alert the user if the update failed
-                alert('Failed to update taken.txt.');
-            });
-        }
-
-        // Attach the path click event handler to all path elements
-        const paths = document.querySelectorAll('path');
-        paths.forEach(path => {
-            path.addEventListener('click', onPathClick);
-        });
+// Attach the path click event handler to all path elements
+const paths = document.querySelectorAll('path');
+paths.forEach(path => {
+  path.addEventListener('click', onPathClick);
+});
     </script>
 </body>
 
