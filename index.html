@@ -1661,7 +1661,7 @@ THE SOFTWARE.
         // Define the path click event handler function
         function onPathClick(event) {
             // Get the name of the clicked path
-            const pathName = event.target.getAttribute('name');
+            const pathName = event.target.getAttribute('name') || event.target.getAttribute('class');
 
             // Check if the path name is already taken
             if (countryColors[pathName]) {
